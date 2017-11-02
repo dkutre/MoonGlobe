@@ -13,7 +13,6 @@
 #include <Magnum/Texture.h>
 
 typedef std::string TextureId;
-class AAssetManager;
 
 namespace Moonglobe
 {
@@ -37,7 +36,6 @@ public:
     static ResourceManager& instance();
     static void clear();
 
-    static void setAssetManager(AAssetManager *mgr);
     bool freeTexture(TextureId texture_id);
     std::shared_ptr<Magnum::Texture2D> getTexture(TextureId texture_id);
 
@@ -54,7 +52,6 @@ private:
     std::unordered_map<TextureId, std::string> id_to_filename;
     std::unordered_map<TextureId, std::shared_ptr<Magnum::Texture2D>> textures;
     static ResourceManager* manager;
-    static AAssetManager *assetManager;
     friend ResourceManagerDestroyer;
     static ResourceManagerDestroyer destroyer;
 };

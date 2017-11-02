@@ -1,14 +1,11 @@
 #include "ResourceManager/ResourceManager.h"
 #include "Utils/to_str.h"
-#include "android/asset_manager.h"
-
 
 using namespace Moonglobe;
 
 std::shared_ptr<Magnum::Trade::AbstractImporter> ResourceManager::importer;
 ResourceManager* ResourceManager::manager = nullptr;
 ResourceManagerDestroyer ResourceManager::destroyer;
-AAssetManager *ResourceManager::assetManager = nullptr;
 
 ResourceManager::ResourceManager()
 {
@@ -59,11 +56,6 @@ void ResourceManager::clear()
     manager = nullptr;
 }
 
-void ResourceManager::setAssetManager(AAssetManager *mgr)
-{
-    assetManager = mgr;
-}
-
 std::shared_ptr<Magnum::Texture2D> ResourceManager::getTexture(TextureId texture_id)
 {
     if (textures.find(texture_id) == textures.end()) {
@@ -96,13 +88,9 @@ std::shared_ptr<Magnum::Texture2D> ResourceManager::loadTexture(TextureId id)
             break;
     }
 
-    AAsset *asset = AAssetManager_open(assetManager, filename.c_str(), AASSET_MODE_BUFFER);
-    const char *raw_data = reinterpret_cast<const char *>(AAsset_getBuffer(asset));
-    off_t data_size = AAsset_getLength(asset);
-    Corrade::Containers::ArrayView<const char> data(raw_data, data_size);
-    if(!importer->openData(data))
+    const Magnum::Utility::Resource rs{zoom_level};
+    if(!importer->openData(rs.getRaw(filename)))
         Magnum::Error() << "cannot load image\n";
-    AAsset_close(asset);
 
     std::optional<Magnum::Trade::ImageData2D> image = importer->image2D(0);
     CORRADE_INTERNAL_ASSERT(image);
