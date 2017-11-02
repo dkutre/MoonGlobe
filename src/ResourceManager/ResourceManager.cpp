@@ -36,11 +36,6 @@ void ResourceManager::fillHashTable(size_t zoom_level, size_t rows, size_t colum
     }
 }
 
-ResourceManagerDestroyer::~ResourceManagerDestroyer()
-{
-    delete instance;
-}
-
 ResourceManager& ResourceManager::instance()
 {
     if (importer == nullptr) {
