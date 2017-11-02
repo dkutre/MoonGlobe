@@ -22,14 +22,14 @@ class ResourceManager;
 class ResourceManagerDestroyer
 {
 public:
-    ~ResourceManagerDestroyer();
+    ~ResourceManagerDestroyer() { delete instance; }
     void initialize(ResourceManager* manager) { instance = manager; }
 
 private:
     ResourceManager* instance = nullptr;
 };
 
-// signleton
+// singleton
 class ResourceManager
 {
 public:

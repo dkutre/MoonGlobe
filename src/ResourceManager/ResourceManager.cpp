@@ -31,10 +31,6 @@ void ResourceManager::fillHashTable(size_t zoom_level, size_t rows, size_t colum
             id_to_filename.insert(std::make_pair(texture_id, filename));
         }
     }
-
-ResourceManagerDestroyer::~ResourceManagerDestroyer()
-{
-    delete instance;
 }
 
 ResourceManager& ResourceManager::instance()
